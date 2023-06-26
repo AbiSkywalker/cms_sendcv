@@ -56,7 +56,7 @@ class cms_sendcv extends Module
                 $notifications['messages'] = $this->context->controller->success;
                 $notifications['nw_error'] = false;
 
-                $thankyou_cvRedirectUrl = $this->context->link->getCMSLink('15', null);
+                $thankyou_cvRedirectUrl = $this->context->link->getCMSLink('15', null); //change to redirect after submit
                 Tools::redirect($thankyou_cvRedirectUrl);
             }
         } 
