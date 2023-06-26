@@ -13,7 +13,7 @@
       <section class="form-fields">
 
         <div class="form-group row">
-          <label class="col-md-4 form-control-label">{l s='Full Name' d='Modules.CmsSendCV.Shop'} <sup>*</sup></label>
+          <label class="col-md-4 form-control-label">{l s='Full Name' d='Modules.Cmssendcv.Shop'} <sup>*</sup></label>
           <div class="col-md-6">
             <input
               class="form-control"
@@ -26,20 +26,20 @@
         </div>
 
         <div class="form-group row">
-          <label class="col-md-4 form-control-label">{l s='Phone' d='Modules.CmsSendCV.Shop'} <sup>*</sup></label>
+          <label class="col-md-4 form-control-label">{l s='Phone' d='Modules.Cmssendcv.Shop'} <sup>*</sup></label>
           <div class="col-md-6">
             <input
               class="form-control"
               name="phone"
               type="text"
               value="{$contact.phone}"
-              placeholder="{l s='Phone' d='Modules.CmsSendCV.Shop'}"
+              placeholder="{l s='Phone' d='Modules.Cmssendcv.Shop'}"
             >
           </div>
         </div>
 
         <div class="form-group row">
-          <label class="col-md-4 form-control-label">{l s='E-mail' d='Modules.CmsSendCV.Shop'} <sup>*</sup></label>
+          <label class="col-md-4 form-control-label">{l s='E-mail' d='Modules.Cmssendcv.Shop'} <sup>*</sup></label>
           <div class="col-md-6">
             <input
               class="form-control"
@@ -52,27 +52,26 @@
         </div>
             
         <div class="form-group row">
-          <label class="col-md-4 form-control-label">{l s='Location' d='Modules.CmsSendCV.Shop'}</label>
+          <label class="col-md-4 form-control-label">{l s='Location' d='Modules.Cmssendcv.Shop'} <sup>*</sup></label>
           <div class="col-md-6">
             <input
               class="form-control"
               name="location"
               type="text"
               value="{$contact.address}"
-              placeholder="{l s='Location' d='Modules.CmsSendCV.Shop'}"
+              placeholder="{l s='Location' d='Modules.Cmssendcv.Shop'}"
             >
           </div>
         </div>
         
         <div class="form-group row">
-          <label class="col-md-4 form-control-label">{l s='Desired job position' d='Modules.CmsSendCV.Shop'} <sup>*</sup></label>
+          <label class="col-md-4 form-control-label">{l s='Desired job position' d='Modules.Cmssendcv.Shop'} <sup>*</sup></label>
           <div class="col-md-6">
             {assign var="job_positions_options" value=";"|explode:$job_positions}
-            <select class="form-control" name="position[]" multiple="true" id="position">
+            <select class="form-control" name="position" id="position">
                 {foreach from=$job_positions_options item=jobposition}
-                    {assign var="jobposition_arr" value="|"|explode:$jobposition}
-                    {if $jobposition_arr[0] != '' && $jobposition_arr[1] != ''}
-                        <option value="{$jobposition_arr[0]|trim}" id="{$jobposition_arr[0]|trim}">{$jobposition_arr[1]}</option>
+                    {if $jobposition != ''}
+                        <option value="{$jobposition|trim}">{$jobposition|trim}</option>
                     {/if}
                 {/foreach}
             </select>

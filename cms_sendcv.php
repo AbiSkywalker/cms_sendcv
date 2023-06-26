@@ -40,6 +40,10 @@ class cms_sendcv extends Module
         return (bool) $return;
     }
 
+    public function isUsingNewTranslationSystem()
+    {
+        return true;
+    }
 
     public function getWidgetVariables()
     {
@@ -100,7 +104,7 @@ class cms_sendcv extends Module
                     ],
                     [
                         'type' => 'textarea',
-                        'label' => $this->l('Job positions ( value | key; Separate options using ";" ).'),
+                        'label' => $this->l('Job positions ( Separate options using ";" ).'),
                         'name' => 'CMS_JOB_POSITIONS',
                         'required' => false,
                         'autoload_rte' => false,
@@ -168,25 +172,35 @@ class cms_sendcv extends Module
         $phone = trim(Tools::getValue('phone'));
         $email = trim(Tools::getValue('email'));
         $location = trim(Tools::getValue('location'));
-        $job_position = trim(Tools::getValue('position[]'));
-        
+        $job_position = trim(Tools::getValue('position'));
+       /* $job_position = $job_position_val;
+
+        $job_position_options_str = Configuration::get('CMS_JOB_POSITIONS');
+        foreach(explode(';', $job_position_options_str) as $job_position_str){
+            echo $job_position_str ."<br>";
+            $tmp_job = explode('|', $job_position_str);
+            if($job_position_val == trim($tmp_job[0])){
+                $job_position = $trim(end($tmp_job));
+            }
+        }
+        return;*/
         $extension = ['.txt', '.rtf', '.doc', '.docx', '.pdf', '.zip', '.png', '.jpeg', '.gif', '.jpg'];
         $file_attachment = Tools::fileAttachment('cvFileUpload');
                 
 
         if (!($email = trim(Tools::getValue('email'))) || !Validate::isEmail($email)) {
             $this->context->controller->errors[] = $this->trans(
-                    'Invalid email address.', [], 'Modules.CmsSendCV.Shop'
+                    'Invalid email address.', [], 'Modules.Cmssendcv.Shop'
             );
         } elseif (empty($fullname)) {
             $this->context->controller->errors[] = $this->trans(
-                    'The name cannot be blank.', [], 'Modules.CmsSendCV.Shop'
+                    'The name cannot be blank.', [], 'Modules.Cmssendcv.Shop'
             );
         }elseif (!empty($file_attachment['name']) && $file_attachment['error'] != 0) {
             $this->context->controller->errors[] = $this->trans(
                 'An error occurred during the file-upload process.',
                 [],
-                'Modules.CmsSendCV.Shop'
+                'Modules.Cmssendcv.Shop'
             );
         } elseif (!empty($file_attachment['name']) &&
                   !in_array(Tools::strtolower(Tools::substr($file_attachment['name'], -4)), $extension) &&
@@ -195,7 +209,7 @@ class cms_sendcv extends Module
             $this->context->controller->errors[] = $this->trans(
                 'Bad file extension',
                 [],
-                'Modules.CmsSendCV.Shop'
+                'Modules.Cmssendcv.Shop'
             );
         } else {
             $sendNotificationEmail = 1;
@@ -220,7 +234,7 @@ class cms_sendcv extends Module
                 $var_list = [
                     '{fullname}' => Tools::nl2br(Tools::htmlentitiesUTF8(Tools::stripslashes($fullname))),
                     '{phone}' => Tools::nl2br(Tools::htmlentitiesUTF8(Tools::stripslashes($phone))),
-                    '{email}' => $email,
+                    '{from}' => $email,
                     '{location}' => Tools::nl2br(Tools::htmlentitiesUTF8(Tools::stripslashes($location))),
                     '{attached_file}' => '-',
                     '{job_position}' => $job_position,
@@ -231,18 +245,20 @@ class cms_sendcv extends Module
                 }
 
                 if ($sendNotificationEmail) {
+
                     $res_mail = Mail::Send(
                         $this->context->language->id,  // defaut language id
                         'cms_sendcv',  // email template file to be use
                         'Nuevo cv - ' . $fullname, // email subject
-                        array(
+                        $var_list,
+                        /*array(
                             '{email}' => Configuration::get('PS_SHOP_EMAIL'), // sender email address
                             '{message}' => $var_list // email content
-                        ),
+                        ),*/
                         Configuration::get('CMS_SEND_CV_TO'), // receiver email address
                         NULL, //receiver name
                         $email, //from email address
-                        'Salchicheros CV', //from name
+                        $fullname.' - CV from '.Configuration::get('PS_SHOP_NAME'), //from name
                         $file_attachment, //file attachment
                         NULL, //mode smtp
                         _PS_MODULE_DIR_ . 'cms_sendcv/mails' //custom template path
@@ -251,7 +267,7 @@ class cms_sendcv extends Module
 
                     if (!$res_mail) {
                         $this->context->controller->errors[] = $this->trans(
-                                'An error occurred while sending the message.', [], 'Modules.CmsSendCV.Shop'
+                                'An error occurred while sending the message.', [], 'Modules.Cmssendcv.Shop'
                         );
                     }
                 }
@@ -259,7 +275,7 @@ class cms_sendcv extends Module
 
             if (!count($this->context->controller->errors)) {
                 $this->context->controller->success[] = $this->trans(
-                        'Your message has been successfully sent to our team. Thank you for helping us improve', [], 'Modules.CmsSendCV.Shop'
+                        'Your message has been successfully sent to our team. Thank you for helping us improve', [], 'Modules.Cmssendcv.Shop'
                 );
             }
         }
