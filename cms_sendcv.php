@@ -184,7 +184,7 @@ class cms_sendcv extends Module
             }
         }
         return;*/
-        $extension = ['.txt', '.rtf', '.doc', '.docx', '.pdf', '.zip', '.png', '.jpeg', '.gif', '.jpg'];
+        $extension = ['.jpg', '.png', '.doc', '.docx', '.pdf', '.jpeg'];
         $file_attachment = Tools::fileAttachment('cvFileUpload');
                 
 

@@ -80,10 +80,10 @@
         </div>
 
         <div class="form-group row">
-            <label  class="col-md-4 form-control-label" for="fileUpload">{l s='Your CV file'} <sup>*</sup></label>
+            <label  class="col-md-4 form-control-label" for="fileUpload">{l s='Your CV file'  d='Modules.Cmssendcv.Shop'} <sup>*</sup></label>
             <div class="col-md-6">
                 <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-                <input type="file" class="required form-control" id="cvFileUpload" name="cvFileUpload" />
+                <input type="file" class="required form-control" id="cvFileUpload" name="cvFileUpload" accept=".jpg, .png, .jpeg, .pdf, .doc, .docx" />
             </div>
         </div>
                 
